@@ -15,6 +15,14 @@ namespace ado
 
         private static void Main() //string[] args)
         {
+            DpsTest dps = new DpsTest();
+
+            dps.Start("22566322221", "5544223");
+
+            dps.MAC = "040011223344";
+
+            dps.Save();
+#if false
             // Create database connection
             Logger.Info("Hello");
             using (var db = new ritEntities())
@@ -22,7 +30,7 @@ namespace ado
                 var test = db.ElectricalTests.Create();
                 var batch = db.Batches.Create();
 
-                #region Delete all
+            #region Delete all
 
 #if False
                 var testsToDelete = db.ElectricalTests.Where(x => x.SerialNo != "" );
@@ -33,9 +41,9 @@ namespace ado
                 db.SaveChanges();
 #endif
 
-                #endregion
+            #endregion
 
-                #region Create test recors
+            #region Create test recors
 
                 // Get unique random serial number
                 do
@@ -63,17 +71,17 @@ namespace ado
                 // Set the result
                 test.Result = !test.MAC.Contains("e");
 
-                #endregion
+            #endregion
 
-                #region Set batch number
+            #region Set batch number
 
                 //Set batch number
                 var BatchNumber = "22566322221";
                 Batch b = null;
 
-                #endregion
+            #endregion
 
-                #region Create or find an existing batch record
+            #region Create or find an existing batch record
 
                 // Checed in new batch
                 try
@@ -98,20 +106,21 @@ namespace ado
                     batch = b;
                 }
 
-                #endregion
+            #endregion
 
-                #region Save to DB
+            #region Save to DB
 
                 test.BatchId = batch.Id;
                 batch.ElectricalTests.Add(test);
                 db.SaveChanges();
 
-                #endregion
+            #endregion
 
                 var et = batch.ElectricalTests.ToList();
                 et.ForEach(
                     r => Console.WriteLine("SerialNo: " + r.SerialNo + "\t\tBatch number: " + r.Batch.BatchNumber));
             }
+#endif
         }
     }
 }
