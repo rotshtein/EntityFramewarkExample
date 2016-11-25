@@ -15,6 +15,9 @@ namespace ado
 
         private static void Main() //string[] args)
         {
+            Console.WriteLine("The version of mscorlib.dll is: {0}",
+              typeof(Program).Assembly.GetName().Version);
+
             DpsTest dps = new DpsTest();
 
             dps.Start("22566322221", "5544223");

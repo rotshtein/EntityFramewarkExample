@@ -29,6 +29,5 @@ C:\Users\uri\Documents\Visual Studio 2015\Projects\example\ado\bin\Debug\log4net
 C:\Users\uri\Documents\Visual Studio 2015\Projects\example\ado\bin\Debug\EntityFramework.xml
 C:\Users\uri\Documents\Visual Studio 2015\Projects\example\ado\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\uri\Documents\Visual Studio 2015\Projects\example\ado\bin\Debug\log4net.xml
-C:\Users\uri\Documents\Visual Studio 2015\Projects\example\ado\obj\Debug\ado.csprojResolveAssemblyReference.cache
 C:\Users\uri\Documents\Visual Studio 2015\Projects\example\ado\obj\Debug\ado.exe.manifest
 C:\Users\uri\Documents\Visual Studio 2015\Projects\example\ado\obj\Debug\ado.application

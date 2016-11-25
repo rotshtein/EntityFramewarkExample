@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ritModelStoreContainer" CdmEntityContainer="ritEntities">
+    <EntitySetMapping Name="ElectricalTests">
+      <EntityTypeMapping TypeName="IsTypeOf(ritModel.ElectricalTest)">
+        <MappingFragment StoreEntitySet="ElectricalTests">
+          <ScalarProperty Name="HwVersion" ColumnName="HwVersion" />
+          <ScalarProperty Name="SwVersion" ColumnName="SwVersion" />
+          <ScalarProperty Name="DpTemp" ColumnName="DpTemp" />
+          <ScalarProperty Name="JigTemp" ColumnName="JigTemp" />
+          <ScalarProperty Name="Output_2_24V" ColumnName="Output_2_24V" />
+          <ScalarProperty Name="Output_1_24V" ColumnName="Output_1_24V" />
+          <ScalarProperty Name="Output_2_6V" ColumnName="Output_2_6V" />
+          <ScalarProperty Name="Output_1_6V" ColumnName="Output_1_6V" />
+          <ScalarProperty Name="Current_24V" ColumnName="Current_24V" />
+          <ScalarProperty Name="Current_6V" ColumnName="Current_6V" />
+          <ScalarProperty Name="PS_Right_A2D_UnderPressure" ColumnName="PS_Right_A2D_UnderPressure" />
+          <ScalarProperty Name="PS_Right_A2D_Idle" ColumnName="PS_Right_A2D_Idle" />
+          <ScalarProperty Name="PS_Left_A2D_UnderPressure" ColumnName="PS_Left_A2D_UnderPressure" />
+          <ScalarProperty Name="PS_Left_A2D_Idle" ColumnName="PS_Left_A2D_Idle" />
+          <ScalarProperty Name="PS2_Output" ColumnName="PS2_Output" />
+          <ScalarProperty Name="PS2_TargetOutput" ColumnName="PS2_TargetOutput" />
+          <ScalarProperty Name="PS1_Output" ColumnName="PS1_Output" />
+          <ScalarProperty Name="PS1_TargetOutput" ColumnName="PS1_TargetOutput" />
+          <ScalarProperty Name="ConnectedCurrent" ColumnName="ConnectedCurrent" />
+          <ScalarProperty Name="IdleCurrent" ColumnName="IdleCurrent" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="SerialNo" ColumnName="SerialNo" />
+          <ScalarProperty Name="MAC" ColumnName="MAC" />
+          <ScalarProperty Name="Result" ColumnName="Result" />
+          <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Batches">
+      <EntityTypeMapping TypeName="IsTypeOf(ritModel.Batch)">
+        <MappingFragment StoreEntitySet="Batches">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="BatchNumber" ColumnName="BatchNumber" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
