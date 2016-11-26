@@ -71,6 +71,12 @@ namespace ado
             }
         }
 
+        public override string ToString()
+        {
+            string s = String.Format("{0},{1},{2}", SerialNo, MAC, Result ? "+" : "-");
+            return s;
+        }
+
         private ElectricalTest GetBase()
         {
             ElectricalTest e = new ElectricalTest();

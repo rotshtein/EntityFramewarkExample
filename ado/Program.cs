@@ -4,6 +4,7 @@ using System.Net.NetworkInformation;
 using System.Reflection;
 using log4net;
 using log4net.Config;
+using System.Collections.Generic;
 
 [assembly: XmlConfigurator(ConfigFile = "Log4Net.config", Watch = true)]
 
@@ -20,43 +21,48 @@ namespace ado
 
             DpsTest dps = new DpsTest();
 
-            dps.Start("22566322221", "5544223");
+            dps.Start("22566322221", GetSerial());
 
-            dps.MAC = "040011223344";
+            dps.MAC = GetMAC();
+
+            dps.Result = GetResult();
 
             dps.Save();
-#if false
-            // Create database connection
-            Logger.Info("Hello");
+
+            #region How to use the database
+            Console.WriteLine("Entered: " + dps.ToString());
+
+            using (var db = new ritEntities())
+            {
+                foreach (ElectricalTest e in  db.Batches.Where(x => x.Id == dps.BatchId).First().ElectricalTests)
+                    Console.WriteLine( String.Format("{0,15}\t{1,15}\t{2,6}", e.SerialNo , e.MAC ,e.Result ? "+" : "-"));
+            }
+            #endregion
+        }
+
+
+        #region Get info (Serial, MAC and Result) for example
+        private static string GetSerial()
+        {
             using (var db = new ritEntities())
             {
                 var test = db.ElectricalTests.Create();
-                var batch = db.Batches.Create();
-
-            #region Delete all
-
-#if False
-                var testsToDelete = db.ElectricalTests.Where(x => x.SerialNo != "" );
-                db.ElectricalTests.RemoveRange(testsToDelete);
-
-                var batchsToDelete = db.Batches.Where(x => x.BatchNumber != "");
-                db.Batches.RemoveRange(batchsToDelete);
-                db.SaveChanges();
-#endif
-
-            #endregion
-
-            #region Create test recors
-
-                // Get unique random serial number
                 do
                 {
                     test.SerialNo = new Random().Next(1000, 10000000).ToString();
                 } while (db.ElectricalTests.Find(test.SerialNo) != null);
 
+                return test.SerialNo;
+            }
+        }
+
+        private static string GetMAC()
+        {
+            using (var db = new ritEntities())
+            {
                 // Create new MAC based on the last in table
                 PhysicalAddress lastMac;
-                byte[] macArray = {0x04, 0x11, 0x22, 0x33, 0x44, 0xFF};
+                byte[] macArray = { 0x04, 0x11, 0x22, 0x33, 0x44, 0xFF };
                 try
                 {
                     lastMac = PhysicalAddress.Parse(db.ElectricalTests.Min(r => r.MAC).ToUpper());
@@ -69,61 +75,14 @@ namespace ado
                 }
 
                 lastMac = PhysicalAddress.Parse(string.Concat(Array.ConvertAll(macArray, j => j.ToString("X2"))));
-                test.MAC = lastMac.ToString();
-
-                // Set the result
-                test.Result = !test.MAC.Contains("e");
-
-            #endregion
-
-            #region Set batch number
-
-                //Set batch number
-                var BatchNumber = "22566322221";
-                Batch b = null;
-
-            #endregion
-
-            #region Create or find an existing batch record
-
-                // Checed in new batch
-                try
-                {
-                    b = db.Batches.First(x => x.BatchNumber == BatchNumber);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error("This should happend only when the Batch table is empty", ex);
-                }
-
-                // and create if it is new
-                if (b == null)
-                {
-                    batch.BatchNumber = BatchNumber;
-                    batch.Date = DateTime.Now;
-                    db.Batches.Add(batch);
-                    db.SaveChanges();
-                }
-                else
-                {
-                    batch = b;
-                }
-
-            #endregion
-
-            #region Save to DB
-
-                test.BatchId = batch.Id;
-                batch.ElectricalTests.Add(test);
-                db.SaveChanges();
-
-            #endregion
-
-                var et = batch.ElectricalTests.ToList();
-                et.ForEach(
-                    r => Console.WriteLine("SerialNo: " + r.SerialNo + "\t\tBatch number: " + r.Batch.BatchNumber));
+                return lastMac.ToString();
             }
-#endif
+            #endregion
+        }
+
+        private static bool GetResult()
+        {
+            return (new Random().Next(1, 10) != 1);
         }
     }
 }
