@@ -15,7 +15,7 @@
 [assembly: System.Reflection.AssemblyCopyright("Copyright RIT")]
 [assembly: System.Runtime.InteropServices.ComVisible(false)]
 [assembly: System.CLSCompliant(true)]
-[assembly: System.Reflection.AssemblyInformationalVersion("1.0.1.1518c22")]
+[assembly: System.Reflection.AssemblyInformationalVersion("1.0.1.5068c65")]
 [assembly: System.Reflection.AssemblyVersion("1.0.1")]
 [assembly: System.Reflection.AssemblyFileVersion("1.0.1")]
 

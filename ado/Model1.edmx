@@ -1,0 +1,338 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Batches">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchNumber" Type="nchar" MaxLength="15" />
+          <Property Name="Date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CalibrationDatas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="SerialNo" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="SetPoint" Type="float" Nullable="false" />
+          <Property Name="Pressure" Type="float" Nullable="false" />
+          <Property Name="RightA2D" Type="int" />
+          <Property Name="LeftA2D" Type="int" />
+          <Property Name="Temp" Type="float" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Calibrations">
+          <Key>
+            <PropertyRef Name="SerialNo" />
+          </Key>
+          <Property Name="SerialNo" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="MAC" Type="nchar" MaxLength="12" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="BatchId" Type="int" />
+        </EntityType>
+        <EntityType Name="ElectricalTests">
+          <Key>
+            <PropertyRef Name="SerialNo" />
+          </Key>
+          <Property Name="SerialNo" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="MAC" Type="nchar" MaxLength="12" Nullable="false" />
+          <Property Name="Result" Type="bit" Nullable="false" />
+          <Property Name="SwVersion" Type="nchar" MaxLength="20" />
+          <Property Name="HwVersion" Type="nchar" MaxLength="20" />
+          <Property Name="BatchId" Type="int" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="IdleCurrent" Type="int" />
+          <Property Name="ConnectedCurrent" Type="int" />
+          <Property Name="PS1_TargetOutput" Type="int" />
+          <Property Name="PS1_Output" Type="int" />
+          <Property Name="PS2_TargetOutput" Type="int" />
+          <Property Name="PS2_Output" Type="int" />
+          <Property Name="PS_Left_A2D_Idle" Type="int" />
+          <Property Name="PS_Left_A2D_UnderPressure" Type="int" />
+          <Property Name="PS_Right_A2D_Idle" Type="int" />
+          <Property Name="PS_Right_A2D_UnderPressure" Type="int" />
+          <Property Name="Current_6V" Type="int" />
+          <Property Name="Current_24V" Type="int" />
+          <Property Name="Output_1_6V" Type="int" />
+          <Property Name="Output_2_6V" Type="int" />
+          <Property Name="Output_1_24V" Type="nchar" MaxLength="10" />
+          <Property Name="Output_2_24V" Type="nchar" MaxLength="10" />
+          <Property Name="JigTemp" Type="decimal" Precision="1" Scale="0" />
+          <Property Name="DpTemp" Type="decimal" Precision="1" Scale="0" />
+        </EntityType>
+        <Association Name="FK_Calibration_Batches">
+          <End Role="Batches" Type="Self.Batches" Multiplicity="0..1" />
+          <End Role="Calibrations" Type="Self.Calibrations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batches">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Calibrations">
+              <PropertyRef Name="BatchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CalibrationDatas_Calibrations">
+          <End Role="Calibrations" Type="Self.Calibrations" Multiplicity="1" />
+          <End Role="CalibrationDatas" Type="Self.CalibrationDatas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Calibrations">
+              <PropertyRef Name="SerialNo" />
+            </Principal>
+            <Dependent Role="CalibrationDatas">
+              <PropertyRef Name="SerialNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ElectricalTest_To_Batch">
+          <End Role="Batches" Type="Self.Batches" Multiplicity="0..1" />
+          <End Role="ElectricalTests" Type="Self.ElectricalTests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batches">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ElectricalTests">
+              <PropertyRef Name="BatchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Batches" EntityType="Self.Batches" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CalibrationDatas" EntityType="Self.CalibrationDatas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Calibrations" EntityType="Self.Calibrations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ElectricalTests" EntityType="Self.ElectricalTests" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Calibration_Batches" Association="Self.FK_Calibration_Batches">
+            <End Role="Batches" EntitySet="Batches" />
+            <End Role="Calibrations" EntitySet="Calibrations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CalibrationDatas_Calibrations" Association="Self.FK_CalibrationDatas_Calibrations">
+            <End Role="Calibrations" EntitySet="Calibrations" />
+            <End Role="CalibrationDatas" EntitySet="CalibrationDatas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ElectricalTest_To_Batch" Association="Self.FK_ElectricalTest_To_Batch">
+            <End Role="Batches" EntitySet="Batches" />
+            <End Role="ElectricalTests" EntitySet="ElectricalTests" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Batch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="BatchNumber" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Calibrations" Relationship="Self.FK_Calibration_Batches" FromRole="Batches" ToRole="Calibration" />
+          <NavigationProperty Name="ElectricalTests" Relationship="Self.FK_ElectricalTest_To_Batch" FromRole="Batches" ToRole="ElectricalTests" />
+        </EntityType>
+        <EntityType Name="Calibration">
+          <Key>
+            <PropertyRef Name="SerialNo" />
+          </Key>
+          <Property Name="SerialNo" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="MAC" Type="String" MaxLength="12" FixedLength="true" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="BatchId" Type="Int32" />
+          <NavigationProperty Name="Batch" Relationship="Self.FK_Calibration_Batches" FromRole="Calibration" ToRole="Batches" />
+          <NavigationProperty Name="CalibrationDatas" Relationship="Model.FK_CalibrationDatas_Calibrations" FromRole="Calibration" ToRole="CalibrationData" />
+        </EntityType>
+        <EntityType Name="ElectricalTest">
+          <Key>
+            <PropertyRef Name="SerialNo" />
+          </Key>
+          <Property Name="SerialNo" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="MAC" Type="String" MaxLength="12" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Result" Type="Boolean" Nullable="false" />
+          <Property Name="SwVersion" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="HwVersion" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="BatchId" Type="Int32" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="IdleCurrent" Type="Int32" />
+          <Property Name="ConnectedCurrent" Type="Int32" />
+          <Property Name="PS1_TargetOutput" Type="Int32" />
+          <Property Name="PS1_Output" Type="Int32" />
+          <Property Name="PS2_TargetOutput" Type="Int32" />
+          <Property Name="PS2_Output" Type="Int32" />
+          <Property Name="PS_Left_A2D_Idle" Type="Int32" />
+          <Property Name="PS_Left_A2D_UnderPressure" Type="Int32" />
+          <Property Name="PS_Right_A2D_Idle" Type="Int32" />
+          <Property Name="PS_Right_A2D_UnderPressure" Type="Int32" />
+          <Property Name="Current_6V" Type="Int32" />
+          <Property Name="Current_24V" Type="Int32" />
+          <Property Name="Output_1_6V" Type="Int32" />
+          <Property Name="Output_2_6V" Type="Int32" />
+          <Property Name="Output_1_24V" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Output_2_24V" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="JigTemp" Type="Decimal" Precision="1" Scale="0" />
+          <Property Name="DpTemp" Type="Decimal" Precision="1" Scale="0" />
+          <NavigationProperty Name="Batch" Relationship="Self.FK_ElectricalTest_To_Batch" FromRole="ElectricalTests" ToRole="Batches" />
+        </EntityType>
+        <Association Name="FK_Calibration_Batches">
+          <End Role="Batches" Type="Self.Batch" Multiplicity="0..1" />
+          <End Role="Calibration" Type="Self.Calibration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batches">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Calibration">
+              <PropertyRef Name="BatchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ElectricalTest_To_Batch">
+          <End Role="Batches" Type="Self.Batch" Multiplicity="0..1" />
+          <End Role="ElectricalTests" Type="Self.ElectricalTest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batches">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ElectricalTests">
+              <PropertyRef Name="BatchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RIT_QAEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Batches" EntityType="Self.Batch" />
+          <EntitySet Name="Calibrations" EntityType="Self.Calibration" />
+          <EntitySet Name="ElectricalTests" EntityType="Self.ElectricalTest" />
+          <AssociationSet Name="FK_Calibration_Batches" Association="Self.FK_Calibration_Batches">
+            <End Role="Batches" EntitySet="Batches" />
+            <End Role="Calibration" EntitySet="Calibrations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ElectricalTest_To_Batch" Association="Self.FK_ElectricalTest_To_Batch">
+            <End Role="Batches" EntitySet="Batches" />
+            <End Role="ElectricalTests" EntitySet="ElectricalTests" />
+          </AssociationSet>
+          <EntitySet Name="CalibrationDatas" EntityType="Model.CalibrationData" />
+          <AssociationSet Name="FK_CalibrationDatas_Calibrations" Association="Model.FK_CalibrationDatas_Calibrations">
+            <End Role="Calibration" EntitySet="Calibrations" />
+            <End Role="CalibrationData" EntitySet="CalibrationDatas" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CalibrationData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="SerialNo" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="SetPoint" Type="Double" Nullable="false" />
+          <Property Name="Pressure" Type="Double" Nullable="false" />
+          <Property Name="RightA2D" Type="Int32" />
+          <Property Name="LeftA2D" Type="Int32" />
+          <Property Name="Temp" Type="Double" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Calibration" Relationship="Model.FK_CalibrationDatas_Calibrations" FromRole="CalibrationData" ToRole="Calibration" />
+        </EntityType>
+        <Association Name="FK_CalibrationDatas_Calibrations">
+          <End Type="Model.Calibration" Role="Calibration" Multiplicity="1" />
+          <End Type="Model.CalibrationData" Role="CalibrationData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Calibration">
+              <PropertyRef Name="SerialNo" />
+            </Principal>
+            <Dependent Role="CalibrationData">
+              <PropertyRef Name="SerialNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="RIT_QAEntities">
+    <EntitySetMapping Name="Batches">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Batch)">
+        <MappingFragment StoreEntitySet="Batches">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="BatchNumber" ColumnName="BatchNumber" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Calibrations">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Calibration)">
+        <MappingFragment StoreEntitySet="Calibrations">
+          <ScalarProperty Name="SerialNo" ColumnName="SerialNo" />
+          <ScalarProperty Name="MAC" ColumnName="MAC" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ElectricalTests">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.ElectricalTest)">
+        <MappingFragment StoreEntitySet="ElectricalTests">
+          <ScalarProperty Name="SerialNo" ColumnName="SerialNo" />
+          <ScalarProperty Name="MAC" ColumnName="MAC" />
+          <ScalarProperty Name="Result" ColumnName="Result" />
+          <ScalarProperty Name="SwVersion" ColumnName="SwVersion" />
+          <ScalarProperty Name="HwVersion" ColumnName="HwVersion" />
+          <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="IdleCurrent" ColumnName="IdleCurrent" />
+          <ScalarProperty Name="ConnectedCurrent" ColumnName="ConnectedCurrent" />
+          <ScalarProperty Name="PS1_TargetOutput" ColumnName="PS1_TargetOutput" />
+          <ScalarProperty Name="PS1_Output" ColumnName="PS1_Output" />
+          <ScalarProperty Name="PS2_TargetOutput" ColumnName="PS2_TargetOutput" />
+          <ScalarProperty Name="PS2_Output" ColumnName="PS2_Output" />
+          <ScalarProperty Name="PS_Left_A2D_Idle" ColumnName="PS_Left_A2D_Idle" />
+          <ScalarProperty Name="PS_Left_A2D_UnderPressure" ColumnName="PS_Left_A2D_UnderPressure" />
+          <ScalarProperty Name="PS_Right_A2D_Idle" ColumnName="PS_Right_A2D_Idle" />
+          <ScalarProperty Name="PS_Right_A2D_UnderPressure" ColumnName="PS_Right_A2D_UnderPressure" />
+          <ScalarProperty Name="Current_6V" ColumnName="Current_6V" />
+          <ScalarProperty Name="Current_24V" ColumnName="Current_24V" />
+          <ScalarProperty Name="Output_1_6V" ColumnName="Output_1_6V" />
+          <ScalarProperty Name="Output_2_6V" ColumnName="Output_2_6V" />
+          <ScalarProperty Name="Output_1_24V" ColumnName="Output_1_24V" />
+          <ScalarProperty Name="Output_2_24V" ColumnName="Output_2_24V" />
+          <ScalarProperty Name="JigTemp" ColumnName="JigTemp" />
+          <ScalarProperty Name="DpTemp" ColumnName="DpTemp" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CalibrationDatas">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.CalibrationData)">
+        <MappingFragment StoreEntitySet="CalibrationDatas">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="SerialNo" ColumnName="SerialNo" />
+          <ScalarProperty Name="SetPoint" ColumnName="SetPoint" />
+          <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+          <ScalarProperty Name="RightA2D" ColumnName="RightA2D" />
+          <ScalarProperty Name="LeftA2D" ColumnName="LeftA2D" />
+          <ScalarProperty Name="Temp" ColumnName="Temp" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

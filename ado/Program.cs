@@ -64,7 +64,7 @@ namespace ado
 
                 foreach (CalibrationData cd in dd.CalibrationDatas.ToList())
                 {
-                    Console.WriteLine("Setpoint {0}, Pressure{1},temp{3}", cd.SetPoint, cd.Pressure, cd.Temp);
+                    Console.WriteLine("Setpoint {0,20}, Pressure{1,5},temp{2,5}", cd.SetPoint, cd.Pressure, cd.Temp);
                 }
             }
             #endregion
