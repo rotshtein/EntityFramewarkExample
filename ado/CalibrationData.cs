@@ -10,13 +10,18 @@
 namespace ado
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class sp_helpdiagrams1_Result
+    public partial class CalibrationData
     {
-        public string Database { get; set; }
-        public string Name { get; set; }
-        public int ID { get; set; }
-        public string Owner { get; set; }
-        public int OwnerID { get; set; }
+        public string SerialNo { get; set; }
+        public double SetPoint { get; set; }
+        public double Pressure { get; set; }
+        public Nullable<int> RightA2D { get; set; }
+        public Nullable<int> LeftA2D { get; set; }
+        public Nullable<double> Temp { get; set; }
+        public int Id { get; set; }
+    
+        public virtual Calibration Calibration { get; set; }
     }
 }

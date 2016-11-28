@@ -18,41 +18,12 @@ namespace ado
             Logger.Debug("DpsTest started");
             this.StartDate = DateTime.Now;
             this.SerialNo = Serial;
-
-            using (var db = new ritEntities())
-            {
-                Batch ExistBatch = null;
-                var b = CurrentBatch;
-                try
-                {
-                    ExistBatch = db.Batches.FirstOrDefault(x => x.BatchNumber == b);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error("This should happend only when the Batch table is empty", ex);
-                }
-
-                // and create if it is new
-                if (ExistBatch == null)
-                {
-                    Batch _currentBatch = db.Batches.Create();
-                    _currentBatch.BatchNumber = CurrentBatch;
-                    _currentBatch.Date = this.StartDate;
-                    db.Batches.Add(_currentBatch);
-                    db.SaveChanges();
-                    this.BatchId = _currentBatch.Id;
-                    Logger.Debug("New batch created. Batch Number = " + this.Batch.BatchNumber);
-                }
-                else
-                {
-                    this.BatchId = ExistBatch.Id;
-                }
-            }
+            this.BatchId = utils.GetBatchId(CurrentBatch);
         }
 
         public void Save()
         {
-            using (var db = new ritEntities())
+            using (var db = new RIT_QAEntities())
             {
                 try
                 {
@@ -73,8 +44,7 @@ namespace ado
 
         public override string ToString()
         {
-            string s = String.Format("{0},{1},{2}", SerialNo, MAC, Result ? "+" : "-");
-            return s;
+            return String.Format("{0,15},{1,15},{2,6}", SerialNo, MAC, Result ? "+" : "-");
         }
 
         private ElectricalTest GetBase()

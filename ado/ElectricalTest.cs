@@ -17,6 +17,8 @@ namespace ado
         public string SerialNo { get; set; }
         public string MAC { get; set; }
         public bool Result { get; set; }
+        public string SwVersion { get; set; }
+        public string HwVersion { get; set; }
         public Nullable<int> BatchId { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
@@ -38,8 +40,6 @@ namespace ado
         public string Output_2_24V { get; set; }
         public Nullable<decimal> JigTemp { get; set; }
         public Nullable<decimal> DpTemp { get; set; }
-        public string SwVersion { get; set; }
-        public string HwVersion { get; set; }
     
         public virtual Batch Batch { get; set; }
     }

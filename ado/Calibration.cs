@@ -12,22 +12,21 @@ namespace ado
     using System;
     using System.Collections.Generic;
     
-    public partial class Batch
+    public partial class Calibration
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Batch()
+        public Calibration()
         {
-            this.Calibrations = new HashSet<Calibration>();
-            this.ElectricalTests = new HashSet<ElectricalTest>();
+            this.CalibrationDatas = new HashSet<CalibrationData>();
         }
     
-        public int Id { get; set; }
-        public string BatchNumber { get; set; }
+        public string SerialNo { get; set; }
+        public string MAC { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
+        public Nullable<int> BatchId { get; set; }
     
+        public virtual Batch Batch { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Calibration> Calibrations { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ElectricalTest> ElectricalTests { get; set; }
+        public virtual ICollection<CalibrationData> CalibrationDatas { get; set; }
     }
 }
